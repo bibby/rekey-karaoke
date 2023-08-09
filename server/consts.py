@@ -1,10 +1,10 @@
 import os
 
 env = os.environ.get
-
-VOLUME_BASE = '/opt/volumes/split'
-DOCKER_USER = 1000
 ORIGINAL_KEY = 0
+
+VOLUME_BASE = '/opt/volumes/rekey'
+DOCKER_USER = 1000
 
 S3_BUCKET = env('S3_BUCKET', 'spleet.bbby.org')
 DATABASE_FILE = env('DATABASE_FILE', 'app.db')

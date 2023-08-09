@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-vol=/opt/volumes/split
+vol=/opt/volumes/rekey
 here=$(dirname $(readlink -f ${BASH_SOURCE[0]}))
 
 build(){

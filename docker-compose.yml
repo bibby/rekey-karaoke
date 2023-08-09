@@ -1,0 +1,23 @@
+---
+
+services:
+  redis:
+    image: redis
+    container_name: spleet-redis
+
+  spleet-server:
+    image: spleet-server
+    container_name: spleet-server
+    links:
+      - redis:redis
+    ports:
+      - 1337:1337
+    env_file: example.env
+    environment:
+      REDIS_HOST: redis
+      VIRTUAL_HOST: split.bibby.home
+      VIRTUAL_PORT: 1337
+      CERT_NAME: bibby.home
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /opt/volumes/split:/opt/volumes/split

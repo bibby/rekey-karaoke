@@ -1,0 +1,17 @@
+<div class="border board-gray-500 p-2">
+    <div class="flex flex-row gap-6">
+        <div class="h-[180px] w-[320px] bg-gray-200">
+            {% if track.thumbnail %}
+                <img src="{{ track.thumbnail }}"/>
+            {% endif %}
+        </div>
+        <div class="flex flex-col gap-2">
+            <div class="text-lg font-semibold">
+                <a href="/track/{{ track.uuid }}">
+                    {{ track.title }}
+                </a>
+            </div>
+            <div>{{ track.duration }} {{ track.key }} {{ track.quality }}</div>
+        </div>
+    </div>
+</div>

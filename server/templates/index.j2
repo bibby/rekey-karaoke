@@ -1,0 +1,129 @@
+{% extends 'base.j2' %}
+{% block content %}
+
+    <div class="flex flex-col gap-12">
+
+        <div>
+            <h1 class="text-4xl font-semibold my-4">Add a song</h1>
+            <div id="addForm"
+                 class="border border-slate-200 p-6 bg-slate-400 rounded-lg flex md:flex-row flex-col gap-12">
+                <div>
+                    <form action="/add" method="post" autocomplete="off">
+                        <div class="flex flex-col gap-6">
+
+                            <label>
+                                <p class="text-xs text-gray-50">Youtube URL</p>
+                                <input type="text" placeholder="Youtube URL" name="url" class="p-2 rounded"/>
+                            </label>
+
+                            <label>
+                                <input type="checkbox" name="skip_split"/>
+                                Skip vocal separation step (<em>ie, song is instrumental</em> ).
+                            </label>
+
+                            <label>
+                                <input type="checkbox" name="skip_rekey"/>
+                                Skip re-keying.
+                            </label>
+
+                            <label>
+                                <input type="checkbox" name="rekey_common"/>
+                                Rekey only to <code
+                                    class="tracking-tighter text-sm text-red-800">{{ common_keys }}</code>
+                            </label>
+
+                            <label>
+                                <input type="checkbox" name="prioritize_split"/>
+                                Rekey instrumentals first (faster karaoke)
+                            </label>
+
+                            <label>
+                                <input type="checkbox" name="is_private"/>
+                                Make private. Only you may see this item.
+                            </label>
+
+                            <p class="text-xs w-64">
+                                Maximum length is 15mins. The ideal candidate link would be <em>song-like</em>, ideally
+                                a single song.
+                                Songs with key changes may confuse the key-detector, but will pitch shift just fine.
+                            </p>
+
+                            <button type="submit"
+                                    class="py-2 px-5 rounded-lg border border-gray-800 hover:bg-slate-500 bg-slate-300 w-48">
+                                Submit Song
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="flex flex-col gap-4">
+                    <p>
+                        Supply a link to a youtube video, and the following shall occur.
+                    </p>
+                    <ul class="list-disc">
+                        <li>Metadata shall be collected (name, length, thumbnail).</li>
+                        <li>The song's key shall be <em>best-guessed</em>.</li>
+                        <li>Vocals shall be separated, leaving an original and an instrumental version.</li>
+                        <li>
+                            Tracks with vocals <strong>and</strong> instrumental versions will be re-pitched to all 12
+                            keys (with some overlap on the edges;
+                            -6 to +6 semitones, tritone and fifth are doubled up).
+                        </li>
+                    </ul>
+
+                    <p>
+                        Processing takes some minutes to finish, but this site will provide you with updates.
+                        But you don't have to stay, either. Feel free to queue up a few songs, close the page,
+                        and come back later.
+                    </p>
+
+                    <p>
+                        If there is an error, and processing stops, I apologize in advance. This software
+                        comes with no guarantees of quality, accuracy, or fitness for purpose.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <h1 class="text-4xl font-semibold my-4">Songs</h1>
+            <div id="songList" hx-get="/tracks" hx-trigger="jobPoll"></div>
+        </div>
+
+
+    </div>
+{% endblock %}
+
+
+{% block body_scripts %}
+    <script type="text/javascript">
+        let pollId;
+
+        // start polling
+        function startpolling() {
+            if (pollId) {
+                return;
+            }
+
+            poll()
+            pollId = setInterval(function () {
+                poll()
+            }, 1000 * 7);
+        }
+
+        // stop polling
+        document.body.addEventListener("stopPolling", function (evt) {
+            stopPolling();
+        })
+
+        function stopPolling() {
+            clearInterval(pollId);
+            pollId = null;
+        }
+
+        function poll() {
+            htmx.trigger("#songList", "jobPoll");
+        }
+
+        setTimeout(startpolling, 500);
+    </script>
+{% endblock %}

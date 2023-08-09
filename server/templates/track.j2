@@ -1,0 +1,42 @@
+{% extends 'base.j2' %}
+{% block content %}
+    {% include 'track_inner.j2' %}
+{% endblock %}
+
+
+{% block body_scripts %}
+    <script type="text/javascript">
+        let pollId;
+
+        // start polling
+        function startpolling() {
+            if (pollId) {
+                return;
+            }
+
+            console.log("start polling");
+            pollId = setInterval(function () {
+                poll()
+            }, 1000 * 2);
+        }
+
+        // stop polling
+        document.body.addEventListener("stopPolling", function (evt) {
+            stopPolling();
+        })
+
+        function stopPolling() {
+            clearInterval(pollId);
+            pollId = null;
+        }
+
+        function poll() {
+            console.log("poll")
+            htmx.trigger("#trackData", "trackPoll");
+        }
+
+        {% if not is_done %}
+            setTimeout(startpolling, 500);
+        {% endif %}
+    </script>
+{% endblock %}

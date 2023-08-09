@@ -1,0 +1,10 @@
+flask
+flask_cors
+peewee
+redis
+docker
+flask-login
+boto3
+python-ffmpeg
+mutagen
+validators

@@ -1,0 +1,7 @@
+<div class="p-2 border border-gray-500">
+    {% for track in tracks %}
+        {% include "track_card.j2" %}
+    {% else %}
+        <em>No songs yet.</em>
+    {% endfor %}
+</div>

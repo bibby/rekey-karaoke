@@ -1,0 +1,77 @@
+<div class="flex flex-col gap-12" id="trackData" hx-get="/poll/{{ track.uuid }}" hx-trigger="trackPoll">
+    <div class="flex flex-col border border-dashed border-slate-200 bg-gray-200 p-8">
+            <span>URL: <a href="{{ track.url }}" target="t{{ track.id }}"
+                          class="text-blue-500">{{ track.url }}</a></span>
+        <span>Created: {{ track.created }}</span>
+        <span>Updated: {{ track.updated }} (+{{ updated_delta }})</span>
+        {% if not track.is_done %}
+            <span>Currently: {{ now }} (+{{ now_delta }})</span>
+        {% endif %}
+    </div>
+
+    {% include "track_card.j2" %}
+
+
+    <div class="p-6 bg-slate-300 rounded-md">
+        <h1 class="text-xl font-semibold mb-4">Song Files</h1>
+        <div class="relative overflow-x-auto hidden md:block">
+            <table class="w-full text-sm text-left text-gray-500">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-100">
+                <tr>
+                    <th scope="col" class="px-6 py-3">
+                        Key
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        KeyOffset
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Type
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Status
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Download
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for track_file in files %}
+                    <tr class="hover:bg-blue-50 {{ loop.cycle('bg-white', 'bg-gray-50') }}">
+                        <td class="px-6 py-4">
+                            {{ track_file.key }}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{ track_file.key_offset }}
+                        </td>
+                        <td class="px-6 py-4 text-xs">
+                            {{ track_file.type_name }}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{ track_file.status_name }}
+                        </td>
+                        <td class="px-6 py-4">
+                            {% if track_file.file_url %}
+                                <a href="{{ track_file.file_url }}" target="tr{{ track_file.id }}">
+                                    {{ track_file.file_name }}
+                                </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr class="bg-white">
+                        <td colspan="5" class="px-6 py-4">
+                            <em>No files yet.</em>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="block md:hidden flex flex-col gap-4">
+            {% for track_file in files %}
+                {% include 'file_card.j2' %}
+            {% endfor %}
+        </div>
+    </div>
+</div>

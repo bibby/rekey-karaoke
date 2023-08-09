@@ -1,0 +1,50 @@
+<div class="border border-gray-600 p-2 bg-gray-100">
+    <table class="w-full text-sm text-left text-gray-500">
+        <tbody class="text-xs text-gray-700">
+        <tr>
+            <td class="px-2 py-2 w-1/4">
+                <strong>Key</strong>
+            </td>
+            <td class="px-2 py-2">
+                {{ track_file.key }}
+            </td>
+        </tr>
+        <tr>
+            <td class="px-2 py-2 w-1/4">
+                <strong>KeyOffset</strong>
+            </td>
+            <td class="px-2 py-2">
+                {{ track_file.key_offset }}
+            </td>
+        </tr>
+        <tr>
+            <td class="px-2 py-2 w-1/4">
+                <strong>Type</strong>
+            </td>
+            <td class="px-2 py-2 text-xs">
+                {{ track_file.type_name }}
+            </td>
+        </tr>
+        <tr>
+            <td class="px-2 py-2 w-1/4">
+                <strong>Status</strong>
+            </td>
+            <td class="px-2 py-2">
+                {{ track_file.status_name }}
+            </td>
+        </tr>
+        {% if track_file.file_url %}
+            <tr>
+                <td class="px-2 py-2 w-1/4">
+                    <strong>Download</strong>
+                </td>
+                <td class="px-2 py-2">
+                    <a href="{{ track_file.file_url }}" target="tr{{ track_file.id }}">
+                        {{ track_file.file_name }}
+                    </a>
+                </td>
+            </tr>
+        {% endif %}
+        </tbody>
+    </table>
+</div>

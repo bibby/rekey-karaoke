@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker build -t spleet-server .
+docker build -t rekey-server .
